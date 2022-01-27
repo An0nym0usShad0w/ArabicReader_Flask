@@ -63,6 +63,7 @@ def give_print_result(word):
         return "No results for: " + word
 
 app = Flask(__name__)
+app.debug = True
 
 @app.route('/')
 def index():
@@ -72,6 +73,3 @@ def index():
 def processUserInfo(userInfo):
     print(userInfo)
     return give_print_result(userInfo)
-
-if __name__ == '__main__':
-    app.run(debug=False, host = '0.0.0.0')
