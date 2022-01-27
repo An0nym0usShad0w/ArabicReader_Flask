@@ -74,4 +74,4 @@ def processUserInfo(userInfo):
     return give_print_result(userInfo)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host = '0.0.0.0')
