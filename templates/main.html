@@ -1,0 +1,78 @@
+<html>
+  
+<head>
+    <title>Selected Text</title>
+</head>
+  
+<body style = "text-align: center;">
+    <button id ='pressButton' style = "padding: 6px; font-size: 1.8em; font-weight: bold; z-index: 1;" onclick="GetSelectedText()">Highlight Word and Press</button>
+    <br>
+    <textarea name="" id="Editor" cols="30" rows="10" style = "width: 90vw; height: 95% ; font-size: 2.7em; font-family: 'Calibri'; text-align: right; overflow-y: scroll;">
+        Enter Text
+    </textarea>
+
+    
+    <div style = "text-align: center;">
+
+    </div>   
+    
+    <div class = "popup" id ="popup-1" style = "position: absolute; bottom: 10vh; margin-top: 15px;  text-align: center; z-index: 2; flex: auto; height: 50vh; width: 100vw; background-color: antiquewhite;">
+        <div class = "content">
+            <button onclick="HideTxt()" style="font-size: 2em; ">Close</button>
+            <br>
+            <textarea name="" id="tocopy" cols="30" rows="10" readonly style = "font-size: 2.3em; font-family: 'Calibri'; overflow-y: scroll; width :85%; height: 100%;"
+            >   
+            </textarea>
+        </div>
+    </div>
+
+</body>
+
+<script defer>
+    toCopyId = document.getElementById('tocopy')
+
+    function GetSelectedText()
+    {
+            var textComponent = document.getElementById('Editor');
+            var selectedText;
+
+
+            if (textComponent.selectionStart !== undefined)
+            {// Standards Compliant Version
+                var startPos = textComponent.selectionStart;
+                var endPos = textComponent.selectionEnd;
+                selectedText = textComponent.value.substring(startPos, endPos);
+            }
+            else if (document.selection !== undefined)
+            {// IE Version
+                textComponent.focus();
+                var sel = document.selection.createRange();
+                selectedText = sel.text;
+            }
+            
+            var copyTextArea = document.getElementById('tocopy')
+            //alert("You selected: " + selectedText);
+            
+
+            const request = new XMLHttpRequest()
+            request.open('POST', '/processUserInfo/' + selectedText)
+            request.onload = () =>{
+                const flaskMsg = request.responseText
+                console.log(flaskMsg)
+                
+                document.getElementById('popup-1').style.zIndex = "1";
+                tocopy.value = flaskMsg
+            }
+
+            request.send()
+
+            //return selectedText
+    }
+
+    function HideTxt(){
+        document.getElementById('popup-1').style.zIndex = "-1"; 
+    }
+</script>
+
+  
+</html>
